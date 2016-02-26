@@ -22,6 +22,33 @@ return [
 - Check and edit the other files in the `config/` directory to customize your application as required.
 - Refer to the README in the `tests` directory for information specific to basic application tests.
 
+### MAMP
+add alias in file `/Applications/MAMP/conf/apache/httpd.conf` in section
+```
+<IfModule alias_module>
+Alias /yii2-playground "path_to_your_project/web"
+<Directory "path_to_your_project/web">
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+</Directory>
+```
+url for your project :: http://localhost/yii2-playground
+
+### .htaccess
+
+*** alias ***
+```
+#Rewrite on Alias delete when production
+RewriteBase /yii2-playground/
+```
+
+*** no alias ***
+```
+#Rewrite on Alias delete when production
+RewriteBase /your_project_name/web
+```
 
 Plug in
 -------------
