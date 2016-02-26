@@ -65,8 +65,8 @@ if (YII_ENV_DEV) {
             ],
             'crud'=>[
                 'class'=>'yii\gii\generators\crud\Generator',
-//                'class'=>'common\gii\templates\crud\Generator',
-                'templates'=>['yii-playground'=>'@app/gii-playground/templates/crud/bootstrap']
+//                'class'=>'app\gii\templates\crud\Generator',
+                'templates'=>['playground'=>'@app/gii/templates/crud/bootstrap']
             ]
         ],
     ];

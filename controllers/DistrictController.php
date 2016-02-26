@@ -2,12 +2,15 @@
 
 namespace app\controllers;
 
+use app\models\Amphur;
+use app\models\Province;
 use Yii;
 use app\models\District;
 use app\models\search\DistrictSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * DistrictController implements the CRUD actions for District model.
@@ -30,9 +33,14 @@ class DistrictController extends Controller
      * Lists all District models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($amphurId=null, $provinceId=null)
     {
         $searchModel = new DistrictSearch();
+        $searchModel->amphurId = isset($amphurId) ? $amphurId : $_GET['DistrictSearch']['amphurId'];
+
+        $amphurModel = Amphur::find()->where(['amphurId'=>$searchModel->amphurId])->one();
+
+        $searchModel->provinceId = $amphurModel->provinceId;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -117,5 +125,23 @@ class DistrictController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionDistrict()
+    {
+        if (isset($_POST['depdrop_parents'])) {
+            $parent = $_POST['depdrop_parents'];
+            $amphurId = $parent[0];
+
+            $districts = District::find()->where(['amphurId' => $amphurId])->all();
+
+            $output = [];
+            foreach ($districts as $district) {
+                $output[] = ['id'=>$district->districtId, 'name'=>$district->districtName];
+            }
+
+            echo Json::encode(['output' => $output, 'selected' => '']);
+        } else
+            echo Json::encode(['output' => '', 'selected' => '']);
     }
 }

@@ -48,7 +48,7 @@ class GenerateModelController extends \yii\web\Controller
                 $generator2->modelClass = $modelClass;
                 $generator2->ns = $modelNameSpace;
                 $generator2->baseClass = $generator->ns.'\\'.$generator->modelClass;
-                $generator2->templates['extends'] = Yii::getAlias('@app/gii-playground/templates/model/extends');
+                $generator2->templates['extends'] = Yii::getAlias('@app/gii/templates/model/extends');
                 $generator2->template = 'extends';
                 $files2 = $generator2->generate();
                 $answers2 = [];

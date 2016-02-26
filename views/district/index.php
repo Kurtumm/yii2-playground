@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="district-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
         <?= Html::a('Create District', ['create'], ['class' => 'btn btn-success']) ?>
@@ -21,15 +21,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+//        'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'districtId',
-            'districtCode',
+//            'districtId',
+//            'districtCode',
             'districtName',
-            'amphurId',
-            'provinceId',
+//            'amphurId',
+//            'provinceId',
             // 'geographyId',
 
             ['class' => 'yii\grid\ActionColumn'],

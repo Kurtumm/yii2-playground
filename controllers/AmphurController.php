@@ -6,6 +6,8 @@ use app\models\Province;
 use Yii;
 use app\models\Amphur;
 use app\models\search\AmphurSearch;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -33,18 +35,22 @@ class AmphurController extends Controller
      *
      * $id = provinceId
      */
-    public function actionIndex($id)
+    public function actionIndex($provinceId = null)
     {
         $searchModel = new AmphurSearch();
-        $searchModel->provinceId = $id;
+
+        $provinceId = isset($_GET['AmphurSearch']['provinceId']) ? $_GET['AmphurSearch']['provinceId'] : $provinceId;
+
+        $searchModel->provinceId = $provinceId;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $provinceModel = Province::find()->where(['provinceId'=>$id])->one();
+        $provinceModel = Province::find()->where(['provinceId' => $provinceId])->one();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'provinceModel' => $provinceModel,
+            'provinceName' => $provinceModel->provinceName
         ]);
     }
 
@@ -124,5 +130,23 @@ class AmphurController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionAmphur()
+    {
+        if (isset($_POST['depdrop_parents'])) {
+            $parent = $_POST['depdrop_parents'];
+            $provinceId = $parent[0];
+
+            $amphurs = Amphur::find()->where(['provinceId' => $provinceId])->all();
+
+            $output = [];
+            foreach ($amphurs as $amphur) {
+                $output[] = ['id'=>$amphur->amphurId, 'name'=>$amphur->amphurName];
+            }
+
+            echo Json::encode(['output' => $output, 'selected' => '']);
+        } else
+            echo Json::encode(['output' => '', 'selected' => '']);
     }
 }

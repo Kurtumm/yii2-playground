@@ -8,16 +8,15 @@ use yii\widgets\DetailView;
 /* @var $searchModel app\models\search\AmphurSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+\yii\widgets\Pjax::begin();
 $this->title = 'Amphurs';
-$this->params['breadcrumbs'][] = ['url'=>Yii::$app->getHomeUrl().'province', 'label'=>$provinceModel->provinceName];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="province-view">
-    <h1><?= Html::encode($provinceModel->provinceName) ?></h1>
+    <h1><?= Html::encode($provinceName) ?></h1>
 </div>
 
 <div class="amphur-index">
-    <?php \yii\widgets\Pjax::begin();?>
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -33,14 +32,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
 //            'amphurId',
-            'amphurCode',
+//            'amphurCode',
             'amphurName',
-            'geographyId',
+            [
+                'attribute'=>'amphurName',
+                'format'=>'html',
+                'value'=>function($model){
+                    return Html::a($model->amphurName, ['/district?amphurId='.$model->amphurId]);
+                }
+            ],
+//            'geographyId',
 //            'provinceId',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 
-    <?php \yii\widgets\Pjax::end();?>
 </div>
+<?php \yii\widgets\Pjax::end();?>

@@ -5,7 +5,7 @@ namespace app\models\master;
 use Yii;
 
 /**
- * This is the model class for table "user".
+ * This is the model class for table "users".
  *
  * @property integer $userId
  * @property integer $status
@@ -15,17 +15,15 @@ use Yii;
  * @property string $firstName
  * @property string $lastName
  * @property string $email
- *
- * @property UserProfiles[] $userProfiles
  */
-class UserMaster extends \app\models\ModelMaster
+class UsersMaster extends \app\models\ModelMaster
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'user';
+        return 'users';
     }
 
     /**
@@ -35,7 +33,7 @@ class UserMaster extends \app\models\ModelMaster
     {
         return [
             [['status', 'loginFailed'], 'integer'],
-            [['username', 'password', 'firstName', 'lastName'], 'required'],
+            [['username', 'password', 'firstName', 'lastName', 'email'], 'required'],
             [['username', 'password', 'firstName'], 'string', 'max' => 45],
             [['lastName'], 'string', 'max' => 80],
             [['email'], 'string', 'max' => 255]
@@ -57,13 +55,5 @@ class UserMaster extends \app\models\ModelMaster
             'lastName' => 'Last Name',
             'email' => 'Email',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserProfiles()
-    {
-        return $this->hasMany(UserProfiles::className(), ['userId' => 'userId']);
     }
 }

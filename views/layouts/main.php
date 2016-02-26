@@ -60,7 +60,36 @@ AppAsset::register($this);
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
-        <?= $content ?>
+        <div class="row">
+            <div class="col-md-3">
+                <?php
+                echo Nav::widget([
+                    'options' => ['class' => 'nav nav-pills nav-stacked'],
+                    'items' => [
+                        ['label' => 'Home', 'url' => ['/site/index']],
+                        ['label' => 'Ajax', 'url' => ['/ajax']],
+                        ['label' => 'Province', 'url' => ['/province']],
+                        ['label' => 'Dropdown chain select', 'url' => ['/dropdown/chain-select']],
+                        Yii::$app->user->isGuest ? (
+                        ['label' => 'Login', 'url' => ['/site/login']]
+                        ) : (
+                            '<li>'
+                            . Html::beginForm(['/site/logout'], 'post')
+                            . Html::submitButton(
+                                'Logout (' . Yii::$app->user->identity->username . ')',
+                                ['class' => 'btn btn-link']
+                            )
+                            . Html::endForm()
+                            . '</li>'
+                        )
+                    ],
+                ]);
+                ?>
+            </div>
+            <div class="col-md-9">
+                <?= $content ?>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Province;
+use app\models\Users;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -50,7 +51,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $province = new Province();
         return $this->render('index');
     }
 
@@ -92,5 +92,11 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionRegister()
+    {
+        $userModel = new Users();
+        return $this->render('registion', compact('userModel'));
     }
 }

@@ -28,9 +28,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 //            'provinceId',
-            'provinceCode',
+//            'provinceCode',
             'provinceName',
-            'geographyId',
+            [
+                'attribute'=>'provinceName',
+                'format'=>'html',
+                'value'=>function($model){
+                    return Html::a($model->provinceName, ['/amphur?provinceId='.$model->provinceId]);
+                }
+            ],
+//            'geographyId',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

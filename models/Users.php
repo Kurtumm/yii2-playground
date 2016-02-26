@@ -3,17 +3,22 @@
 namespace app\models;
 
 use Yii;
-use \app\models\master\UserFilesMaster;
+use \app\models\master\UsersMaster;
 
 /**
-* This is the model class for table "user_files".
+* This is the model class for table "users".
 *
-* @property integer $userFilesId
 * @property integer $userId
-* @property string $url
+* @property integer $status
+* @property string $username
+* @property string $password
+* @property integer $loginFailed
+* @property string $firstName
+* @property string $lastName
+* @property string $email
 */
 
-class UserFiles extends \app\models\master\UserFilesMaster{
+class Users extends \app\models\master\UsersMaster{
     /**
     * @inheritdoc
     */

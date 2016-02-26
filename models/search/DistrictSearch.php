@@ -19,7 +19,7 @@ class DistrictSearch extends District
     {
         return [
             [['districtId', 'amphurId', 'provinceId', 'geographyId'], 'integer'],
-            [['districtCode', 'districtName'], 'safe'],
+            [['districtCode', 'districtName', 'searchText'], 'safe'],
         ];
     }
 
@@ -56,14 +56,14 @@ class DistrictSearch extends District
         }
 
         $query->andFilterWhere([
-            'districtId' => $this->districtId,
+//            'districtId' => $this->districtId,
             'amphurId' => $this->amphurId,
             'provinceId' => $this->provinceId,
-            'geographyId' => $this->geographyId,
+//            'geographyId' => $this->geographyId,
         ]);
 
-        $query->andFilterWhere(['like', 'districtCode', $this->districtCode])
-            ->andFilterWhere(['like', 'districtName', $this->districtName]);
+//        $query->andFilterWhere(['like', 'districtCode', $this->districtCode])
+            $query->andFilterWhere(['like', 'districtName', $this->searchText]);
 
         return $dataProvider;
     }
