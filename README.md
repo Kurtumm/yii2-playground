@@ -38,13 +38,13 @@ url for your project :: http://localhost/yii2-playground
 
 ### .htaccess
 
-*** alias ***
+**alias**
 ```
 #Rewrite on Alias delete when production
 RewriteBase /yii2-playground/
 ```
 
-*** no alias ***
+**no alias**
 ```
 #Rewrite on Alias delete when production
 RewriteBase /your_project_name/web
