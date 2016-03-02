@@ -45,6 +45,13 @@ $config = [
             ],
         ],
     ],
+
+    'modules'=>[
+        'model-generator' => [
+            'class' => 'app\modules\ModelGenerator\ModelGenerator',
+        ],
+    ],
+
     'params' => $params,
 ];
 
