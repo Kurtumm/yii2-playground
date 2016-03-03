@@ -68,7 +68,7 @@ if (YII_ENV_DEV) {
         'generators'=>[
             'model'=> [
                 'class' => 'yii\gii\generators\model\Generator',
-                'templates'=>['extends'=>'@app/gii-playground/templates/model/extends']
+                'templates'=>['extends'=>'@app/gii/templates/model/extends']
             ],
             'crud'=>[
                 'class'=>'yii\gii\generators\crud\Generator',
