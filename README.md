@@ -64,3 +64,16 @@ url :: http://demos.krajee.com/widget-details/depdrop
 composer require kartik-v/yii2-widget-select2 "@dev"
 url :: https://github.com/kartik-v/yii2-widget-select2
 ~~~
+
+### Generate Model Module
+copy `modules/ModelGenerator` to your project
+
+import module to config
+```
+'modules'=>[
+    ...,
+    'model-generator' => [
+        'class' => 'app\modules\ModelGenerator\ModelGenerator',
+    ],
+]
+```
