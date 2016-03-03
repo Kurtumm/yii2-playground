@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\ProvinceSearch */
@@ -11,38 +12,33 @@ $this->title = 'Provinces';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="province-index">
-    <?php \yii\widgets\Pjax::begin();?>
+    <?php Pjax::begin();?>
+    <h1 class="page-header"><?= Html::encode($this->title) ?></h1>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            index
+            <p class="pull-right">
+                <?= Html::a('Create Province', ['create'], ['class' => 'btn btn-success btn-xs']) ?>
+            </p>
+        </div>
+        <div class="panel-body">
+            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Province', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+        		'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
+            		'provinceId',
+            		'provinceCode',
+            		'provinceName',
+            		'geographyId',
 
-    <?= GridView::widget([
-        'id'=>'province-grid',
-        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-//            'provinceId',
-//            'provinceCode',
-            'provinceName',
-            [
-                'attribute'=>'provinceName',
-                'format'=>'html',
-                'value'=>function($model){
-                    return Html::a($model->provinceName, ['/amphur?provinceId='.$model->provinceId]);
-                }
-            ],
-//            'geographyId',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
-    <?php \yii\widgets\Pjax::end();?>
-
-</div>
+                    ['class' => 'yii\grid\ActionColumn'],
+                ],
+            ]); ?>
+        </div>
+    </div>
+    <?php Pjax::end();?></div>

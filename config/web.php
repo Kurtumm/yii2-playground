@@ -73,7 +73,10 @@ if (YII_ENV_DEV) {
             'crud'=>[
                 'class'=>'yii\gii\generators\crud\Generator',
 //                'class'=>'app\gii\templates\crud\Generator',
-                'templates'=>['playground'=>'@app/gii/templates/crud/bootstrap']
+                'templates'=>[
+                    'playground'=>'@app/gii/templates/crud/bootstrap',
+                    'bootstrap3'=>'@app/gii/templates/crud/bootstrap3',
+                ]
             ]
         ],
     ];
