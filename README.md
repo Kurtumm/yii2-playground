@@ -77,3 +77,6 @@ import module to config
     ],
 ]
 ```
+
+### Create CrudGenertor in yii2-gii/generators/crud/
+copy app/gii/CrudGenerator.php to yii2-gii/generators/crud/
