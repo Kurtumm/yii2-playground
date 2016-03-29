@@ -42,6 +42,7 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
     {
         return [
             <?= implode(",\n            ", $rules) ?>,
+            [['searchText'], 'safe']
         ];
     }
 

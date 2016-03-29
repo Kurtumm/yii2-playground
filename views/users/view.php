@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Province */
+/* @var $model app\models\Users */
 
-//$this->title = $model->provinceId;
-$this->title = 'View Province: ' . ' ' . $model->provinceId;
-$this->params['breadcrumbs'][] = ['label' => 'Provinces', 'url' => ['index']];
+//$this->title = $model->userId;
+$this->title = 'View Users: ' . ' ' . $model->userId;
+$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="province-view">
+<div class="users-view">
 
     <h1 class="page-header"><?= Html::encode($this->title) ?></h1>
 
@@ -19,8 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="panel-heading">
             <?= Html::encode($this->title) ?>
             <p class="pull-right">
-                <?= Html::a('Update', ['update', 'id' => $model->provinceId], ['class' => 'btn btn-primary btn-xs']) ?>
-                <?= Html::a('Delete', ['delete', 'id' => $model->provinceId], [
+                <?= Html::a('Update', ['update', 'id' => $model->userId], ['class' => 'btn btn-primary btn-xs']) ?>
+                <?= Html::a('Delete', ['delete', 'id' => $model->userId], [
                     'class' => 'btn btn-danger btn-xs',
                     'data' => [
                         'confirm' => 'Are you sure you want to delete this item?',
@@ -33,10 +33,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-					'provinceId',
-					'provinceCode',
-					'provinceName',
-					'geographyId',
+					'userId',
+					'status',
+					'username',
+					'password',
+					'loginFailed',
+					'firstName',
+					'lastName',
+					'email:email',
+					'image',
+					'url:url',
                 ],
             ]) ?>
         </div>

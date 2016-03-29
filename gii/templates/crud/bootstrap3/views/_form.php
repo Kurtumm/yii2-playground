@@ -27,14 +27,14 @@ use yii\widgets\ActiveForm;
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
     <?= "<?php " ?>$form = ActiveForm::begin([
-        'options' => ['class' => 'form-horizontal'],
+        'options' => ['class' => 'form-horizontal', 'enctype' => 'multipart/form-data'],
         'fieldConfig' => [
             'template' => '{label}<div class="col-sm-10">{input}</div>',
-            'labelOptions'=>[
+            'labelOptions'=> [
                 'class'=>'col-sm-2 control-label'
             ]
         ]
-    ])?>
+    ]) ?>
 
     <div class="panel panel-default">
         <div class="panel-heading">Form</div>

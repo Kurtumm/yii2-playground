@@ -94,6 +94,10 @@ class DefaultController extends Controller
                         }
 //                        echo '</p>';
 
+                        if(!file_exists(Yii::getAlias('@' . str_replace('\\', '/', $generator2->ns)) . '/' . 'search')){
+                            @mkdir(Yii::getAlias('@' . str_replace('\\', '/', $generator2->ns)) . '/' . 'search', 0775, true);
+                        }
+
                         $tables[] = [
                             'name' => $generator->tableName,
                             'master' => $generator->modelClass,

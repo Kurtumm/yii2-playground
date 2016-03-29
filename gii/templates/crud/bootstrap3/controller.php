@@ -39,6 +39,12 @@ use yii\data\ActiveDataProvider;
 use <?= ltrim($generator->baseControllerClass, '\\') ?>;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+<?php foreach ($generator->getColumnNames() as $attribute):?>
+<?php if(strpos($attribute, 'image') !== false || strpos($attribute, 'img') !== false || strpos($attribute, 'file') !== false):?>
+use yii\web\UploadedFile;
+<?php break;?>
+<?php endif;?>
+<?php endforeach;?>
 
 /**
  * <?= $controllerClass ?> implements the CRUD actions for <?= $modelClass ?> model.
@@ -103,8 +109,41 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     {
         $model = new <?= $modelClass ?>();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', <?= $urlParams ?>]);
+        if ($model->load(Yii::$app->request->post())) {
+            $flag = false;
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+<?php foreach ($generator->getColumnNames() as $attribute):?>
+<?php if(strpos($attribute, 'image') !== false || strpos($attribute, 'img') !== false || strpos($attribute, 'file') !== false):?>
+                <?= "\$".$attribute."File = UploadFile::getInstanceByName(\"{$modelClass}['{$attribute}']\");\n"?>
+                if(isset($<?=$attribute?>File) && !empty($<?=$attribute?>File)) {
+                    $folderName = '<?=strtolower($modelClass)?>';
+                    $file = explode('.', $<?=$attribute?>File);
+                    $folderUrl = \Yii::$app->getBasePath() . '/web/' . 'images/' . $folderName . "/";
+
+                    if(!file_exists($folderUrl))
+                        mkdir($folderUrl, 0775);
+
+                    $fileName = \Yii::$app->security->generateRandomString(12) . '.' . end($file);
+                    $fileUrl = $folderUrl.$fileName;
+                    $model-><?=$attribute?> = '/images/'.$folderName.'/'.$fileName;
+                }
+<?php endif;?>
+<?php endforeach;?>
+
+                if($flag) {
+                    $transaction->commit();
+                    return $this->redirect(['view', <?= $urlParams ?>]);
+                } else {
+                    return $this->render('create', [
+                        'model' => $model,
+                    ]);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw $e;
+            }
+
         } else {
             return $this->render('create', [
                 'model' => $model,

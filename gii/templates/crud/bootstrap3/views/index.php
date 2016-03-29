@@ -72,13 +72,13 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
                 ],
             ]); ?>
 <?php else: ?>
-    <?= "<?= " ?>ListView::widget([
-        'dataProvider' => $dataProvider,
-        'itemOptions' => ['class' => 'item'],
-        'itemView' => function ($model, $key, $index, $widget) {
-            return Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]);
-        },
-    ]) ?>
+            <?= "<?= " ?>ListView::widget([
+                'dataProvider' => $dataProvider,
+                'itemOptions' => ['class' => 'item'],
+                'itemView' => function ($model, $key, $index, $widget) {
+                    return Html::a(Html::encode($model-><?= $nameAttribute ?>), ['view', <?= $urlParams ?>]);
+                },
+            ]) ?>
 <?php endif; ?>
         </div>
     </div>

@@ -1,12 +1,11 @@
 <?php
-
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
-namespace app\gii\templates\crud;
+namespace app\gii\template\crud;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -16,6 +15,7 @@ use yii\gii\CodeFile;
 use yii\helpers\Inflector;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
+use yii\gii\generators\crud\Generator;
 
 /**
  * Generates CRUD
@@ -30,15 +30,15 @@ use yii\web\Controller;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends \yii\gii\generators\crud\Generator
+class GiiGenerator extends Generator
 {
-
     public $modelClass;
     public $controllerClass;
     public $viewPath;
     public $baseControllerClass = 'yii\web\Controller';
     public $indexWidgetType = 'grid';
     public $searchModelClass = '';
+
 
     /**
      * @inheritdoc
@@ -232,14 +232,9 @@ class Generator extends \yii\gii\generators\crud\Generator
         }
         $column = $tableSchema->columns[$attribute];
         if ($column->phpType === 'boolean') {
-            return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->checkbox()";
+            return "\$form->field(\$model, '$attribute')->checkbox()";
         } elseif ($column->type === 'text') {
-//            throw new \yii\base\Exception(\yii\redactor\widgets\Redactor::className());
-//            if (!class_exists("yii\redactor\widgets\Redactor")) {
-//            return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->textarea(['rows' => 6])";
-//            } else {
-            return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->widget(\yii\\redactor\widgets\Redactor::className())";
-//            }
+            return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
         } else {
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
                 $input = 'passwordInput';
@@ -251,32 +246,12 @@ class Generator extends \yii\gii\generators\crud\Generator
                 foreach ($column->enumValues as $enumValue) {
                     $dropDownOptions[$enumValue] = Inflector::humanize($enumValue);
                 }
-                return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->dropDownList("
-                . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)) . ", ['prompt' => ''])";
+                return "\$form->field(\$model, '$attribute')->dropDownList("
+                    . preg_replace("/\n\s*/", ' ', VarDumper::export($dropDownOptions)).", ['prompt' => ''])";
             } elseif ($column->phpType !== 'string' || $column->size === null) {
-                if ($column->name != "status") {
-                    return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->$input()";
-                } else {
-                    return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->checkbox()->label('')";
-                }
+                return "\$form->field(\$model, '$attribute')->$input()";
             } else {
-                if (strpos($column->name, "Id") === FALSE) {
-                    if ($column->size < 255) {
-                        return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->$input(['maxlength' => $column->size])";
-                    } else {
-                        if (strpos($column->name, "img") !== FALSE || strpos($column->name, "image") !== FALSE || strpos($column->name, "file") !== FALSE) {
-                            return "(isset(\$model->" . $column->name . ") && !empty(\$model->" . $column->name . ")) ? Html::img(Yii::\$app->homeUrl. \$model->" . $column->name . ", ['style' => 'width:150px', 'class' => 'col-lg-offset-3']) : ''; ?>\n
-                        <?= \$form->field(\$model, '" . $column->name . "', ['options' => ['class' => 'row form-group']])->fileInput() ?> \n
-                        <?= (isset(\$model->" . $column->name . ") && !empty(\$model->" . $column->name . ")) ? Html::hiddenInput((new ReflectionClass(\$model))->getShortName() . '[imageOld]', \$model->" . $column->name . ") : '';";
-//                        return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->$input(['maxlength' => $column->size])";
-                        } else {
-                            return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->$input(['maxlength' => $column->size])";
-                        }
-                    }
-                } else {
-                    $ModelName = str_replace("Id", "", $column->name);
-                    return "\$form->field(\$model, '$attribute',['options'=>['class'=>'row form-group']])->dropDownList(ArrayHelper::map(" . ucfirst($ModelName) . "::find()->all(), '$column->name', 'title'), ['prompt' => '-- Select " . ucfirst($ModelName) . " --'])";
-                }
+                return "\$form->field(\$model, '$attribute')->$input(['maxlength' => true])";
             }
         }
     }
@@ -343,6 +318,7 @@ class Generator extends \yii\gii\generators\crud\Generator
                     $types['boolean'][] = $column->name;
                     break;
                 case Schema::TYPE_FLOAT:
+                case Schema::TYPE_DOUBLE:
                 case Schema::TYPE_DECIMAL:
                 case Schema::TYPE_MONEY:
                     $types['number'][] = $column->name;
@@ -431,6 +407,7 @@ class Generator extends \yii\gii\generators\crud\Generator
                 case Schema::TYPE_BIGINT:
                 case Schema::TYPE_BOOLEAN:
                 case Schema::TYPE_FLOAT:
+                case Schema::TYPE_DOUBLE:
                 case Schema::TYPE_DECIMAL:
                 case Schema::TYPE_MONEY:
                 case Schema::TYPE_DATE:
@@ -448,8 +425,8 @@ class Generator extends \yii\gii\generators\crud\Generator
         $conditions = [];
         if (!empty($hashConditions)) {
             $conditions[] = "\$query->andFilterWhere([\n"
-            . str_repeat(' ', 12) . implode("\n" . str_repeat(' ', 12), $hashConditions)
-            . "\n" . str_repeat(' ', 8) . "]);\n";
+                . str_repeat(' ', 12) . implode("\n" . str_repeat(' ', 12), $hashConditions)
+                . "\n" . str_repeat(' ', 8) . "]);\n";
         }
         if (!empty($likeConditions)) {
             $conditions[] = "\$query" . implode("\n" . str_repeat(' ', 12), $likeConditions) . ";\n";
@@ -563,32 +540,4 @@ class Generator extends \yii\gii\generators\crud\Generator
             return $model->attributes();
         }
     }
-
-    /**
-     * Generates Model Use In Header By Tong
-     * @param string $attribute
-     * @return string
-     */
-    public function generateModelUse($attribute)
-    {
-        $tableSchema = $this->getTableSchema();
-        $column = $tableSchema->columns[$attribute];
-        if ($column->phpType === 'boolean') {
-
-        } elseif ($column->type === 'text') {
-
-        } else {
-            if (is_array($column->enumValues) && count($column->enumValues) > 0) {
-
-            } elseif ($column->phpType !== 'string' || $column->size === null) {
-
-            } else {
-                if (strpos($column->name, "Id") !== FALSE) {
-                    $ModelName = str_replace("Id", "", $column->name);
-                    return "use common\\models\\areawow\\" . ucfirst($ModelName) . ";";
-                }
-            }
-        }
-    }
-
 }

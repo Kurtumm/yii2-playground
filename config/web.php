@@ -71,8 +71,9 @@ if (YII_ENV_DEV) {
                 'templates'=>['extends'=>'@app/gii/templates/model/extends']
             ],
             'crud'=>[
-                'class'=>'yii\gii\generators\crud\Generator',
-//                'class'=>'app\gii\templates\crud\Generator',
+//                'class'=>'yii\gii\generators\crud\Generator',
+                'class'=>'yii\gii\generators\crud\CrudGenerator',
+//                'class'=>'app\gii\templates\crud\GiiGenerator',
                 'templates'=>[
                     'playground'=>'@app/gii/templates/crud/bootstrap',
                     'bootstrap3'=>'@app/gii/templates/crud/bootstrap3',
